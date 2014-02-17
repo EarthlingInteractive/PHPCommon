@@ -35,9 +35,17 @@ class EarthIT_Registry
 		return $c;
 	}
 	
-	public function getComponent( $name ) {
+	public function getComponent( $name, $nullIfDoesntExist=false ) {
 		if( !isset($this->components[$name]) ) {
-			$this->components[$name] = new $name($this);
+			if( $nullIfDoesntExist ) {
+				if( class_exists($name, true) ) {
+					$this->components[$name] = new $name($this);
+				} else {
+					return null;
+				}
+			} else {
+				$this->components[$name] = new $name($this);
+			}
 		}
 		return $this->components[$name];
 	}
