@@ -16,7 +16,9 @@ class EarthIT_Registry
 	public function getConfig( $name ) {
 		$parts = explode('/', $name);
 		$file = array_shift($parts);
-		if( !isset($this->configs[$file]) ) {
+		if( isset($this->configs[$file]) ) {
+			$c = $this->configs[$file];
+		} else {
 			$cf = "{$this->configDir}/{$file}.json";
 			if( !file_exists($cf) ) return null;
 			$c = json_decode(file_get_contents($cf), true);
