@@ -36,6 +36,9 @@ class EarthIT_JSON
 	}
 	
 	public static function prettyPrint( $value, $callback, $separator="\n", $separatorDelta="\t" ) {
+		if( is_object($value) ) {
+			throw new Exception(__CLASS__."#".__FUNCTION__." doesn't work on objects!  ".get_class($value)." given.");
+		}
 		if( is_array($value) ) {
 			if( count($value) == 0 ) {
 				call_user_func($callback, '[]');
