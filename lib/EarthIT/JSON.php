@@ -51,7 +51,7 @@ class EarthIT_JSON
 					if( !$first ) call_user_func($callback, ',');
 					call_user_func($callback, $subSeparator);
 					if( !$isList ) {
-						call_user_func($callback, json_encode($key));
+						call_user_func($callback, json_encode((string)$key));
 						call_user_func($callback, ': ');
 					}
 					self::prettyPrint( $subValue, $callback, $subSeparator, $separatorDelta );
