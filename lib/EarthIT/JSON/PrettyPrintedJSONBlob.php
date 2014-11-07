@@ -13,4 +13,8 @@ class EarthIT_JSON_PrettyPrintedJSONBlob implements Nife_Blob
 	public function writeTo( $writer ) {
 		EarthIT_JSON::prettyPrint($this->value, $writer);
 	}
+	
+	public function __toString() {
+		return EarthIT_JSON::prettyEncode($this->value);
+	}
 }
