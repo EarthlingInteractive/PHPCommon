@@ -28,12 +28,8 @@ class EarthIT_FileTemplateBlob implements Nife_Blob
 		return ob_get_clean();
 	}
 	
-	protected static function isPhpOutputCallback( $callback ) {
-		return $callback == array('Nife_Util','output');
-	}
-	
 	public function writeTo( $outputter ) {
-		if( self::isPhpOutputCallback($outputter) ) {
+		if( Nife_Util::isEchoFunction($outputter) ) {
 			$this->outputDirectly();
 		} else {
 			call_user_func( $outputter, $this->__toString() );
