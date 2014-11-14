@@ -36,7 +36,7 @@ class EarthIT_FileTemplateBlob implements Nife_Blob
 		if( self::isPhpOutputCallback($outputter) ) {
 			$this->outputDirectly();
 		} else {
-			call_user_func( $outputFunction, $this->__toString() );
+			call_user_func( $outputter, $this->__toString() );
 		}
 	}
 }
