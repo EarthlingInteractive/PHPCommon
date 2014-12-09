@@ -1,6 +1,11 @@
 default: run-tests
 
-.PHONY: run-tests
+.PHONY: \
+	clean \
+	run-tests
+
+clean:
+	rm -rf vendor composer.lock
 
 vendor: composer.lock
 	composer install
