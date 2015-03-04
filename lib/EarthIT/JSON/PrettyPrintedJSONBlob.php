@@ -8,6 +8,13 @@ class EarthIT_JSON_PrettyPrintedJSONBlob implements Nife_Blob
 		$this->value = $value;
 	}
 	
+	/**
+	 * Returns the value that's JSON-encoded by this blob.
+	 */
+	public function getValue() {
+		return $this->value;
+	}
+	
 	public function getLength() { return null; }
 	
 	public function writeTo( $writer ) {

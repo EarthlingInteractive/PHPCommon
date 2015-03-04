@@ -15,6 +15,17 @@ class EarthIT_JSON
 	}
 	
 	public static function decode( $thing ) {
+		if( $thing instanceof EarthIT_JSON_PrettyPrintedJSONBlob ) {
+			return $thing->getValue();
+		}
+		
+		if( $thing instanceof Nife_Blob ) {
+			$thing = (string)$thing;
+		}
+		if( !is_string($thing) ) {
+			throw new EarthIT_JSON_JSONDecodeError("Attempted to JSON-decode non-string: ".gettype($thing));
+		}
+		
 		$thing = trim($thing);
 		if( $thing == '' ) throw new EarthIT_JSON_JSONDecodeError("Attempted to JSON-decode empty string.");
 		if( $thing == 'null' ) return null;
