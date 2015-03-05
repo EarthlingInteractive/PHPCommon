@@ -1,8 +1,8 @@
-default: run-tests
+default: run-unit-tests
 
 .PHONY: \
 	clean \
-	run-tests \
+	run-unit-tests \
 	test-dependencies
 
 clean:
@@ -17,5 +17,5 @@ composer.lock:
 
 test-dependencies: vendor
 
-run-tests: test-dependencies
+run-unit-tests: test-dependencies
 	vendor/bin/phpunit --bootstrap vendor/autoload.php test
