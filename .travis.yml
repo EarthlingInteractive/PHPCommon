@@ -1,18 +1,14 @@
 language: php
 
-# list any PHP version you want to test against
 php:
-  - 5.2
+  # - 5.2 - The code should work in 5.2, but Travis won't compose with that.
   - 5.3
   - 5.4
   - 5.5
   - 5.6
   - hhvm
-  - nightly
+  # - nightly - Not all packages have been updated to say they work with PHP 7
 
-# execute any number of scripts before the test run, custom env's are available as variables
 install: make test-dependencies
 
-# omitting "script:" will default to phpunit
-# use the $DB env variable to determine the phpunit.xml to use
 script: make run-unit-tests

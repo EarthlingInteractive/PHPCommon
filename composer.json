@@ -2,11 +2,11 @@
 	"name": "earthit/php-common",
 	"description": "EarthIT Common PHP Classes",
 	"require": {
-		"php": "~5.2",
-		"ryprop/nife": "~0.2"
+		"php": ">=5.2",
+		"ryprop/nife": "^0.2"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~3.7"
+		"phpunit/phpunit": "^3.7"
 	},
 	"autoload": {
 		"psr-0": {
