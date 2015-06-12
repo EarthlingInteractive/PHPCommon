@@ -56,8 +56,11 @@ class EarthIT_JSON
 	 * Just like the normal json_encode, but throws an exception instead of
 	 * returning false on error.
 	 */
-	public static function encode( $value, $options=0, $depth=512 ) {
-		$json = json_encode($value,$options,$depth);
+	public static function encode( $value ) {
+		// Leaving off $options and $depth parameters because:
+		// 1) We don't use them.
+		// 2) PHP 5.2 compatibility.
+		$json = json_encode($value);
 		if( $json === false ) {
 			throw new Exception("Failed to json-encode ".gettype($value).": ".print_r($value,true).": ".self::lastJsonErrorMessage());
 		}
