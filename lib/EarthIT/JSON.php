@@ -13,6 +13,12 @@ class EarthIT_JSON
 		default                          : return "json_last_error() = $code";
 		}
 	}
+
+	protected static function lastJsonErrorMessage() {
+		return function_exists('json_last_error_msg') ?
+			json_last_error_msg() :
+			self::jsonDecodeMessage(json_last_error());
+	}
 	
 	public static function decode( $thing ) {
 		if( $thing instanceof EarthIT_JSON_PrettyPrintedJSONBlob ) {
@@ -32,7 +38,7 @@ class EarthIT_JSON
 		$value = json_decode($thing, true);
 		if( $value === null ) {
 			$report_thing = strlen($thing) < 256 ? $thing : substr($thing,0,253)."...";
-			$message = function_exists('json_last_error_msg') ? json_last_error_msg() : self::jsonDecodeMessage(json_last_error());
+			$message = self::lastJsonErrorMessage();
 			throw new EarthIT_JSON_JSONDecodeError("Error parsing JSON: $message; JSON: $report_thing");
 		}
 		return $value;
@@ -46,10 +52,19 @@ class EarthIT_JSON
 		return true;
 	}
 	
-	public static function prettyPrint( $value, $callback, $separator="\n", $separatorDelta="\t" ) {
-		if( is_object($value) ) {
-			throw new Exception(__CLASS__."#".__FUNCTION__." doesn't work on objects!  ".get_class($value)." given.");
+	/**
+	 * Just like the normal json_encode, but throws an exception instead of
+	 * returning false on error.
+	 */
+	public static function encode( $value, $options=0, $depth=512 ) {
+		$json = json_encode($value,$options,$depth);
+		if( $json === false ) {
+			throw new Exception("Failed to json-encode ".gettype($value).": ".print_r($value,true).": ".self::lastJsonErrorMessage());
 		}
+		return $json;
+	}
+	
+	public static function prettyPrint( $value, $callback, $separator="\n", $separatorDelta="\t" ) {
 		if( is_array($value) ) {
 			if( count($value) == 0 ) {
 				call_user_func($callback, '[]');
@@ -62,7 +77,7 @@ class EarthIT_JSON
 					if( !$first ) call_user_func($callback, ',');
 					call_user_func($callback, $subSeparator);
 					if( !$isList ) {
-						call_user_func($callback, json_encode((string)$key));
+						call_user_func($callback, self::encode((string)$key));
 						call_user_func($callback, ': ');
 					}
 					self::prettyPrint( $subValue, $callback, $subSeparator, $separatorDelta );
@@ -71,8 +86,14 @@ class EarthIT_JSON
 				call_user_func($callback, $separator);
 				call_user_func($callback, $isList ? ']' : '}');
 			}
+		} else if( is_scalar($value) or $value === null ) {
+			$json = self::encode($value);
+			call_user_func($callback, self::encode($value) );
 		} else {
-			call_user_func($callback,  json_encode($value) );
+			throw new Exception(
+				__CLASS__."#".__FUNCTION__." only works on scalars and arrays.  ".
+				gettype($value).(is_object($value) ? " (".get_class($value).")" : '').
+				" given.");
 		}
 	}
 	
