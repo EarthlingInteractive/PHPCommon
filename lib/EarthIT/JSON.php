@@ -2,6 +2,15 @@
 
 class EarthIT_JSON
 {
+	/**
+	 * A special key that can be used to influence how arrays are encoded,
+	 * in case the default (e.g. "[]" for empty arrays) isn't what you want
+	 * (e.g. you wanted "{}").
+	 */
+	const JSON_TYPE = '$jsonType$kjefh873yhfb4cw34u5yfwjd43ukd4rhf38k278yh234t5rfu7yjwrefjmywgef8i2k7n2c$';
+	const JT_LIST = 'list';
+	const JT_OBJECT = 'object';
+	
 	public static function jsonDecodeMessage( $code ) {
 		switch( $code ) {
 		case JSON_ERROR_NONE             : return "No error";
@@ -45,6 +54,13 @@ class EarthIT_JSON
 	}
 	
 	protected static function isList( array $a ) {
+		if( isset($a[self::JSON_TYPE]) ) {
+			switch($a[self::JSON_TYPE]) {
+			case self::JT_LIST: return true;
+			case self::JT_OBJECT: return false;
+			}
+		}
+		
 		$len = count($a);
 		for( $i=0; $i<$len; ++$i ) {
 			if( !array_key_exists($i, $a) ) return false;
@@ -76,10 +92,11 @@ class EarthIT_JSON
 	
 	public static function prettyPrint( $value, $callback, $separator="\n", $separatorDelta="\t" ) {
 		if( is_array($value) ) {
+			$isList = self::isList($value);
+			unset($value[self::JSON_TYPE]); // We don't want to include that!
 			if( count($value) == 0 ) {
-				call_user_func($callback, '[]');
+				call_user_func($callback, $isList ? '[]' : '{}');
 			} else {
-				$isList = self::isList($value);
 				call_user_func($callback, $isList ? '[' : '{');
 				$subSeparator = $separator . $separatorDelta;
 				$first = true;
