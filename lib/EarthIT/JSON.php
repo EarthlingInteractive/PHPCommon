@@ -10,6 +10,24 @@ class EarthIT_JSON
 	const JSON_TYPE = '$jsonType$kjefh873yhfb4cw34u5yfwjd43ukd4rhf38k278yh234t5rfu7yjwrefjmywgef8i2k7n2c$';
 	const JT_LIST = 'list';
 	const JT_OBJECT = 'object';
+
+	/**
+	 * Strips encoding metadata (such as JSON_TYPE) out of arrays.
+	 * 
+	 * If we ever start using array-like objects to represent data+metadata to be JSON-encoded,
+	 * then I expect that this would also convert those objects to arrays.
+	 */
+	public static function withoutMetadata( $jsObject, $recurse=false ) {
+		if( !is_array($jsObject) ) return $jsObject;
+		
+		unset($jsObject[self::JSON_TYPE]);
+		
+		if( $recurse ) foreach( $jsObject as $k=>$v ) {
+			if( is_array($v) ) $jsObject[$k] = self::withoutMetadata($v, $recurse);
+		}
+		
+		return $jsObject;
+	}
 	
 	public static function jsonDecodeMessage( $code ) {
 		switch( $code ) {
