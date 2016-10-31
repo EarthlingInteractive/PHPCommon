@@ -49,7 +49,7 @@ class EarthIT_JSON
 	
 	public static function decode( $thing ) {
 		if( $thing instanceof EarthIT_JSON_PrettyPrintedJSONBlob ) {
-			return $thing->getValue();
+			return self::withoutMetadata($thing->getValue(), true);
 		}
 		
 		if( $thing instanceof Nife_Blob ) {
