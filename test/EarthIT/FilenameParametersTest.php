@@ -29,4 +29,28 @@ class EarthIT_FilenameParametersTest extends PHPUnit_Framework_TestCase
 			EarthIT_FilenameParameters::decodeL3('..foo..bar-baz.bestBeers-are-boxer+blatz+schlitz.._5F_2D_20_25_3A_2E_2B.-+-')
 		);
 	}
+	
+	public function testDecodeL3WithArrayAlias() {
+		$this->assertEquals(
+			array(
+				array(array('thing'),array('foo','bar of_soap')),
+				array(array('baz'))
+			),
+			EarthIT_FilenameParameters::decodeL3('..yukyuk.baz', array(
+				'yukyuk' => array(array('thing'),array('foo','bar of_soap'))
+			))
+		);
+	}
+	
+	public function testDecodeL3WithStringAlias() {
+		$this->assertEquals(
+			array(
+				array(array('thing'),array('foo','bar of_soap')),
+				array(array('baz'))
+			),
+			EarthIT_FilenameParameters::decodeL3('..yukyuk.baz', array(
+				'yukyuk' => 'thing-foo+bar_20of_5Fsoap'
+			))
+		);
+	}
 }

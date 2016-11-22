@@ -77,19 +77,18 @@ class EarthIT_FilenameParameters
 			
 			if( is_array($p) ) {
 				// Alias is already decoded
-				$l2s[] = $p;
-				continue;
-			}
-			
-			$parts1 = explode('-',$p);
-			$l1 = array();
-			foreach( $parts1 as $p1 ) {
-				$parts2 = explode('+', $p1);
-				$l2 = array();
-				foreach( $parts2 as $p2 ) {
-					$l2[] = self::decodeComponent($p2);
+				$l1 = $p;
+			} else {
+				$parts1 = explode('-',$p);
+				$l1 = array();
+				foreach( $parts1 as $p1 ) {
+					$parts2 = explode('+', $p1);
+					$l2 = array();
+					foreach( $parts2 as $p2 ) {
+						$l2[] = self::decodeComponent($p2);
+					}
+					$l1[] = $l2;
 				}
-				$l1[] = $l2;
 			}
 			$l0[] = $l1;
 		}
