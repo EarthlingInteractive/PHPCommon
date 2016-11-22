@@ -41,42 +41,58 @@ class EarthIT_FilenameParameters
 	}
 
 	/**
-	 * @param array $lists a list of lists to be encoded
+	 * @param array $lists a list of lists of lists to be encoded
 	 * @return string
 	 */
-	public static function encodeL2( array $lists ) {
+	public static function encodeL3( array $lists ) {
 		$parts = array();
 		foreach( $lists as $l ) {
 			if( $l === '' ) continue;
 			if( is_scalar($l) ) $l = array($l);
 			if( !is_array($l) ) throw new Error("Can't encode non-array, non-scalar");
 			if( count($l) == 0 ) continue;
-			$sectionParts = array();
-			foreach( $l as $i ) {
-				$sectionParts[] = self::encodeComponent($i);
+			
+			$parts1 = array();
+			foreach( $l as $c ) {
+				if( is_scalar($c) ) $c = array($c);
+				
+				$parts2 = array();
+				foreach( $c as $d ) {
+					$parts2[] = self::encodeComponent($d);
+				}
+				$parts1[] = implode('+', $parts2);
 			}
-			$parts[] = implode('-', $sectionParts);
+			$parts[] = implode('-', $parts1);
 		}
 		return implode('.', $parts);
 	}
 
-	public static function decodeL2( $paramString, array $aliases=array() ) {
+	public static function decodeL3( $paramString, array $aliases=array() ) {
 		if( strlen($paramString) == 0 ) return array();
 		$parts = explode('.', $paramString);
-		$l2s = array();
+		$l0 = array();
 		foreach( $parts as $p ) {
 			if( strlen($p) == 0 ) continue;
-			if( isset($aliases[$p]) ) {
-				$l2s = array_merge($aliases[$p], $l2s);
-			} else {
-				$encodedComponents = explode('-', $p);
-				$decodedComponents = array();
-				foreach( $encodedComponents as $e ) {
-					$decodedComponents[] = self::decodeComponent($e);
-				}
-				$l2s[] = $decodedComponents;
+			if( isset($aliases[$p]) ) $p = $aliases[$p];
+			
+			if( is_array($p) ) {
+				// Alias is already decoded
+				$l2s[] = $p;
+				continue;
 			}
+			
+			$parts1 = explode('-',$p);
+			$l1 = array();
+			foreach( $parts1 as $p1 ) {
+				$parts2 = explode('+', $p1);
+				$l2 = array();
+				foreach( $parts2 as $p2 ) {
+					$l2[] = self::decodeComponent($p2);
+				}
+				$l1[] = $l2;
+			}
+			$l0[] = $l1;
 		}
-		return $l2s;
+		return $l0;
 	}
 }
