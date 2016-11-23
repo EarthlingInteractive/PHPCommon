@@ -72,13 +72,14 @@ class EarthIT_FilenameParameters
 		$parts = explode('.', $paramString);
 		$l0 = array();
 		foreach( $parts as $p ) {
-			if( strlen($p) == 0 ) continue;
 			if( isset($aliases[$p]) ) $p = $aliases[$p];
 			
 			if( is_array($p) ) {
 				// Alias is already decoded
 				$l1 = $p;
 			} else {
+				if( strlen($p) == 0 ) continue;
+				
 				$parts1 = explode('-',$p);
 				$l1 = array();
 				foreach( $parts1 as $p1 ) {

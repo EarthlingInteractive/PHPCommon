@@ -48,8 +48,9 @@ class EarthIT_FilenameParametersTest extends PHPUnit_Framework_TestCase
 				array(array('thing'),array('foo','bar of_soap')),
 				array(array('baz'))
 			),
-			EarthIT_FilenameParameters::decodeL3('..yukyuk.baz', array(
-				'yukyuk' => 'thing-foo+bar_20of_5Fsoap'
+			EarthIT_FilenameParameters::decodeL3('..ignoreme.yukyuk.baz', array(
+				'yukyuk' => 'thing-foo+bar_20of_5Fsoap',
+				'ignoreme' => '',
 			))
 		);
 	}
