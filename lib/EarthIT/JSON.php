@@ -71,7 +71,7 @@ class EarthIT_JSON
 		return $value;
 	}
 	
-	protected static function isList( array $a ) {
+	public static function isList( array $a ) {
 		if( isset($a[self::JSON_TYPE]) ) {
 			switch($a[self::JSON_TYPE]) {
 			case self::JT_LIST: return true;
