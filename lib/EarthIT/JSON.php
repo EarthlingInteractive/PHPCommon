@@ -71,7 +71,13 @@ class EarthIT_JSON
 		return $value;
 	}
 	
-	public static function isList( array $a ) {
+	/**
+	 * Determine whether the given value should be treated (for JSON-encoding purposes)
+	 * as a list.
+	 */
+	public static function isList( $a ) {
+		if( !is_array($a) ) return false;
+		
 		if( isset($a[self::JSON_TYPE]) ) {
 			switch($a[self::JSON_TYPE]) {
 			case self::JT_LIST: return true;
@@ -109,10 +115,13 @@ class EarthIT_JSON
 	}
 	
 	public static function prettyPrint( $value, $callback, $separator="\n", $separatorDelta="\t" ) {
-		if( is_array($value) ) {
+		if( $value instanceof JsonSerializable ) $value = $value->jsonSerialize();
+		
+		if( is_object($value) || is_array($value) ) {
 			$isList = self::isList($value);
-			unset($value[self::JSON_TYPE]); // We don't want to include that!
-			if( count($value) == 0 ) {
+			if( is_array($value) ) unset($value[self::JSON_TYPE]); // We don't want to include that!
+			$entryCount = 0; foreach($value as $k=>$v) ++$entryCount;
+			if( $entryCount == 0 ) {
 				call_user_func($callback, $isList ? '[]' : '{}');
 			} else {
 				call_user_func($callback, $isList ? '[' : '{');

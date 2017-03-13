@@ -1,5 +1,16 @@
 <?php
 
+class EarthIT_JSONTest_FunkyObject1 implements JsonSerializable {
+	public function jsonSerialize() {
+		return (object)array(
+			'foo' => 'bar',
+			'baz' => 'quux'
+		);
+	}
+}
+
+class EarthIT_JSONTest_FunkyObject2 {}
+
 class EarthIT_JSONTest extends PHPUnit_Framework_TestCase
 {
 	public function testEncode() {
@@ -37,5 +48,15 @@ class EarthIT_JSONTest extends PHPUnit_Framework_TestCase
 		$arr = array( EarthIT_JSON::JSON_TYPE => EarthIT_JSON::JT_OBJECT );
 		$str = EarthIT_JSON::prettyEncode($arr);
 		$this->assertEquals( '{}', $str );
+	}
+	
+	public function testEncodeJsonSerializable() {
+		$str = EarthIT_JSON::prettyEncode(new EarthIT_JSONTest_FunkyObject1());
+		$this->assertEquals("{\n\t\"foo\": \"bar\",\n\t\"baz\": \"quux\"\n}", $str);
+	}
+	
+	public function testEncodeEmptyObject() {
+		$str = EarthIT_JSON::prettyEncode(new EarthIT_JSONTest_FunkyObject2());
+		$this->assertEquals("{}", $str);
 	}
 }
