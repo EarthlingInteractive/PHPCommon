@@ -1,16 +1,18 @@
 <?php
 
-class EarthIT_FileTemplateBlobTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EarthIT_FileTemplateBlobTest extends TestCase
 {
 	protected $blob;
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->blob = new EarthIT_FileTemplateBlob(__DIR__.'/hello.php', array('name'=>'World'));
 		$this->expectedOutput = "Hello, World!\n";
 	}
 	
 	public function testDirectOutput() {
 		ob_start();
-		$this->blob->writeTo(Nife_Util::getEchoFunction());
+		$this->blob->writeTo(EarthIT_Util::getEchoFunction());
 		$rez = ob_get_clean();
 		
 		$this->assertEquals($this->expectedOutput, $rez);
@@ -21,7 +23,7 @@ class EarthIT_FileTemplateBlobTest extends PHPUnit_Framework_TestCase
 	}
 	
 	public function testCallbackOutput() {
-		$collector = new Nife_Collector();
+		$collector = new EarthIT_Collector();
 		$this->blob->writeTo($collector);
 		$this->assertEquals($this->expectedOutput, (string)$collector);
 	}

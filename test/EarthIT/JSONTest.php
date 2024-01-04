@@ -1,7 +1,9 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 class EarthIT_JSONTest_FunkyObject1 implements JsonSerializable {
-	public function jsonSerialize() {
+	public function jsonSerialize() : object {
 		return (object)array(
 			'foo' => 'bar',
 			'baz' => 'quux'
@@ -11,7 +13,7 @@ class EarthIT_JSONTest_FunkyObject1 implements JsonSerializable {
 
 class EarthIT_JSONTest_FunkyObject2 {}
 
-class EarthIT_JSONTest extends PHPUnit_Framework_TestCase
+class EarthIT_JSONTest extends TestCase
 {
 	public function testEncode() {
 		$this->assertEquals('"hi"', EarthIT_JSON::encode('hi'));

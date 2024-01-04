@@ -1,6 +1,6 @@
 <?php
 
-class EarthIT_JSON_HybridJSONBlob extends Nife_AbstractBlob
+class EarthIT_JSON_HybridJSONBlob
 {
 	protected $value;
 	protected $nativeEncodeDepth;
@@ -66,5 +66,11 @@ class EarthIT_JSON_HybridJSONBlob extends Nife_AbstractBlob
 	
 	public function writeTo( $callback ) {
 		$this->_write2( $this->value, $callback, 0, $this->separator, $this->separatorDelta );
+	}
+
+	public function __toString() { 
+		$c = new EarthIT_Collector();
+		$this->writeTo($c);
+		return (string)$c;
 	}
 }

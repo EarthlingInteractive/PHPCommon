@@ -1,6 +1,6 @@
 <?php
 
-class EarthIT_FileTemplateBlob implements Nife_Blob
+class EarthIT_FileTemplateBlob
 {
 	public function __construct( $templateFile, array $vars=array() ) {
 		$this->templateFile = $templateFile;
@@ -29,7 +29,7 @@ class EarthIT_FileTemplateBlob implements Nife_Blob
 	}
 	
 	public function writeTo( $outputter ) {
-		if( Nife_Util::isEchoFunction($outputter) ) {
+		if( EarthIT_Util::isEchoFunction($outputter) ) {
 			$this->outputDirectly();
 		} else {
 			call_user_func( $outputter, $this->__toString() );

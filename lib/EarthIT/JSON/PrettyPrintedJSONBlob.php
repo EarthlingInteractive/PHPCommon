@@ -1,6 +1,6 @@
 <?php
 
-class EarthIT_JSON_PrettyPrintedJSONBlob implements Nife_Blob
+class EarthIT_JSON_PrettyPrintedJSONBlob
 {
 	protected $value;
 	

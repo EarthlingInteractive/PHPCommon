@@ -11,6 +11,10 @@ class EarthIT_Collector
 	public function __invoke( $item ) {
 		$this->collection[] = $item;
 	}
+
+	public function getItems() {
+		return $this->collection;
+	}
 	
 	public function __toString() {
 		return implode('',$this->collection);

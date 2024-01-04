@@ -1,6 +1,8 @@
 <?php
 
-class EarthIT_FilenameParametersTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EarthIT_FilenameParametersTest extends TestCase
 {
 	public function testEncodeL3() {
 		$l2 = array(
