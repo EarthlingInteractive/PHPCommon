@@ -52,7 +52,7 @@ class EarthIT_JSON
 			return self::withoutMetadata($thing->getValue(), true);
 		}
 		
-		if( $thing instanceof EarthIT_FileTemplateBlob ) {
+		if( $thing instanceof Nife_StringBlob || $thing instanceof EarthIT_FileTemplateBlob ) {
 			$thing = (string)$thing;
 		}
 		if( !is_string($thing) ) {
