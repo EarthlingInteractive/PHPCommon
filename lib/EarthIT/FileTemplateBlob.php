@@ -2,7 +2,16 @@
 
 class EarthIT_FileTemplateBlob
 {
-	public function __construct( $templateFile, array $vars=array() ) {
+	/**
+	 * @var string the path to the template file
+	 */
+	protected $templateFile;
+	/**
+	 * @var array the variables to be used in the template
+	 */
+	protected $vars;
+	
+	public function __construct( string $templateFile, array $vars=array() ) {
 		$this->templateFile = $templateFile;
 		$this->vars = $vars;
 	}

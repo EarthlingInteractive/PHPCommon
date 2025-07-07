@@ -3,14 +3,12 @@
 class EarthIT_Registry
 {
 	protected $configDir;
-	protected $configs;
-	protected $components;
+	protected $configs = array();
+	protected $components = array();
 	protected $dbAdapter;
 	
 	public function __construct( $configDir ) {
 		$this->configDir = $configDir;
-		$this->configs = array();
-		$this->components = array();
 	}
 	
 	public function getConfig( $name ) {
